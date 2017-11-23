@@ -2,36 +2,40 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskList {
-    private ArrayList<Item> items;
-    private ObservableList<Item> visibleItems;
+    private ArrayList<Task> tasks;
+    private ObservableList<TaskCell> visibleTasks;
     private int currentPageNumber;
 
     public TaskList() {
-        items = new ArrayList<>();
-        visibleItems = FXCollections.observableArrayList(new ArrayList<>());
+        tasks = new ArrayList<>();
+        visibleTasks = FXCollections.observableArrayList(new ArrayList<>());
         currentPageNumber = 0;
     }
 
     public void add(String task) {
-        Item item = new Item(task);
-        items.add(item);
+        Task item = new Task(task);
+        tasks.add(item);
 
-        if (visibleItems.size() < 25) {
-            visibleItems.add(item);
+        if (visibleTasks.size() < 25) {
+            visibleTasks.add(new TaskCell(item));
         }
     }
 
 
-    public ObservableList<Item> getFirstPage() {
-        int itemsToReturn = Math.min(25, items.size());
-        List<Item> newItems = items.subList(0, itemsToReturn);
-        visibleItems.setAll(newItems);
-        return visibleItems;
+    public ObservableList<TaskCell> getFirstPage() {
+        int itemsToReturn = Math.min(25, tasks.size());
+        List<Task> newTasks = tasks.subList(0, itemsToReturn);
+        visibleTasks.clear();
+
+        newTasks.stream()
+                .map((task) -> visibleTasks.add(new TaskCell(task)));
+
+        return visibleTasks;
     }
 
 }
