@@ -2,19 +2,15 @@ package sample;
 
 import javafx.application.Application;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class Main extends Application {
 
@@ -24,18 +20,25 @@ public class Main extends Application {
 
         ListView<TaskList> taskView = setupTaskListListView(taskList);
 
-        for (int i = 0; i < 5; i++) {
-            taskList.add(Integer.toString(i));
-        }
-
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         VBox tilePane = new VBox();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(tilePane, 300, 275));
-        tilePane.getChildren().add(setupNewTaskBox(taskList));
-        tilePane.getChildren().add(taskView);
+        ObservableList<Node> children = tilePane.getChildren();
+        children.add(setupNewTaskBox(taskList));
+        children.add(taskView);
+        children.add(setupPageManipulationBox(taskList));
 
         primaryStage.show();
+    }
+
+    private HBox setupPageManipulationBox(TaskList taskList) {
+        HBox hBox = new HBox();
+        Button nextPageButton = new Button(">");
+        nextPageButton.setOnAction((event) -> taskList.getNextPage());
+
+        hBox.getChildren().add(nextPageButton);
+        return hBox;
     }
 
     private HBox setupNewTaskBox(TaskList taskList) {
@@ -63,7 +66,7 @@ public class Main extends Application {
 
     private ListView<TaskList> setupTaskListListView(TaskList taskList) {
 
-        ListView<TaskList> taskView = new ListView(taskList.getFirstPage());
+        ListView<TaskList> taskView = new ListView(taskList.getNextPage());
 
         taskView.setPrefSize(610.0, 800.0);
         taskView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
