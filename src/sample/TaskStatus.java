@@ -1,5 +1,5 @@
 package sample;
 
 public enum TaskStatus {
-    READY, STARTED, FINISHED
+    READY, STARTED, FINISHED, CONTINUE_LATER
 }

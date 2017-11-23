@@ -18,7 +18,7 @@ public class TaskList {
     }
 
     public void add(String task) {
-        Task item = new Task(task);
+        Task item = new Task(task, this);
         tasks.add(item);
 
         if (visibleTasks.size() < 25) {

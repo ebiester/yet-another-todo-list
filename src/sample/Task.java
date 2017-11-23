@@ -5,29 +5,30 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class Task {
     public String task;
-    private TaskStatus status;
+    private TaskList parentList;
+    private ObjectProperty<TaskStatus> status;
 
-    private ObjectProperty<TaskStatus> statusObject;
-
-    public Task(String task) {
+    public Task(String task, TaskList taskList) {
         this.task = task;
-        statusObject = new SimpleObjectProperty<>(TaskStatus.READY);
-    }
-
-    public TaskStatus getStatus() {
-        return statusObject.get();
+        this.parentList = taskList;
+        status = new SimpleObjectProperty<>(TaskStatus.READY);
     }
 
     public ObjectProperty<TaskStatus> statusObjectProperty() {
-        return statusObject;
+        return status;
     }
 
     public void progress() {
-        if (statusObject.get() == TaskStatus.READY) {
-            statusObject.setValue(TaskStatus.STARTED);
+        if (status.get() == TaskStatus.READY) {
+            status.setValue(TaskStatus.STARTED);
         } else {
-            statusObject.setValue(TaskStatus.FINISHED);
+            status.setValue(TaskStatus.FINISHED);
         }
+    }
+
+    public void continueLater() {
+        status.setValue(TaskStatus.CONTINUE_LATER);
+        parentList.add(this.task);
     }
 
     public String toString() {
