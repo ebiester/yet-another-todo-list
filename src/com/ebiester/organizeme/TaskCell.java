@@ -1,4 +1,4 @@
-package sample;
+package com.ebiester.organizeme;
 
 import javafx.beans.InvalidationListener;
 import javafx.event.ActionEvent;

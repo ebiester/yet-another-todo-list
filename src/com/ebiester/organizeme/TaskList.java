@@ -1,4 +1,4 @@
-package sample;
+package com.ebiester.organizeme;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -1,4 +1,4 @@
-package sample;
+package com.ebiester.organizeme;
 
 import javafx.application.Application;
 import javafx.beans.property.StringProperty;
