@@ -12,6 +12,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/*
+Note: a giant Application/controller mashup is not good architecture, but I'm still trying to understand the
+needs of my system before committing to an architecture, taking advantage of beginner's mind. I'll move to FXML,
+controllers, and proper patterns as it reveals itself. This is a small enough application that I can get away with it.
+
+I've also played with a few basic ideas but haven't committed to one yet.
+*/
+
 public class Main extends Application {
 
     @Override
@@ -20,7 +28,6 @@ public class Main extends Application {
 
         ListView<TaskList> taskView = setupTaskListListView(taskList);
 
-        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         VBox tilePane = new VBox();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(tilePane, 300, 275));
