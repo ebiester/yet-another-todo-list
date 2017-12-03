@@ -46,21 +46,16 @@ public class TaskCell extends HBox {
     private InvalidationListener getStatusInvalidationListener(Task task) {
         return listener -> {
                 TaskStatus status = task.statusObjectProperty().get();
+                taskLabel.setText(task.toString());
                 switch (status) {
                     case STARTED:
                         continueButton.setVisible(true);
                         doButton.setText("Done!");
                         break;
                     case FINISHED:
-                        taskLabel.setText(taskLabel.getText() + " - Done at " + Instant.now().toString());
-                        clearButton(doButton);
-                        clearButton(continueButton);
-                        break;
                     case CONTINUE_LATER:
-                        taskLabel.setText(taskLabel.getText() + " - Continue later at " + Instant.now().toString());
                         clearButton(doButton);
                         clearButton(continueButton);
-                        break;
                 }
             };
     }
