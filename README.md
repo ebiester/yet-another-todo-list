@@ -1,6 +1,6 @@
 This is a little project to scratch my own itch. This should not be considered a code sample at this point, or supported software for that matter.
 
-For crying out loud, it doesn't even have tests! The architecture is hideous! It's ugly! 
+For crying out loud, it doesn't even have tests! The architecture is hideous! It's ugly! It has no tests!
 
 But it's heading down the path of implementing http://markforster.squarespace.com/autofocus-system/ for my own purposes. While I use Zim Wiki for my personal documentation, it's not doing the job I need for managing a large personal backlog. 
 

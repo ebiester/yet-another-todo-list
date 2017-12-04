@@ -1,2 +1,12 @@
 apply plugin: 'idea'
 apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+//todo: get this working instead of depending on local copies
+dependencies {
+    compile 'org.jetbrains.xodus:xodus-openAPI:1.1.0'
+    compile 'org.jetbrains.xodus:xodus-entity-store:1.1.0'
+}
