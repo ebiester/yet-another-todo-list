@@ -1,5 +1,6 @@
 package com.ebiester.organizeme;
 
+import com.ebiester.organizeme.db.TaskStorerToDatabase;
 import javafx.beans.InvalidationListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,7 +12,7 @@ import javafx.scene.layout.Priority;
 
 import java.time.Instant;
 
-public class TaskCell extends HBox {
+class TaskCell extends HBox {
     private Label taskLabel = new Label();
     private Button doButton;
     private Button continueButton;
@@ -40,24 +41,30 @@ public class TaskCell extends HBox {
         continueButton.setVisible(false);
 
         this.getChildren().addAll(taskLabel, continueButton, doButton);
-
+        showCorrectButtons(task);
     }
 
     private InvalidationListener getStatusInvalidationListener(Task task) {
         return listener -> {
-                TaskStatus status = task.statusObjectProperty().get();
-                taskLabel.setText(task.toString());
-                switch (status) {
-                    case STARTED:
-                        continueButton.setVisible(true);
-                        doButton.setText("Done!");
-                        break;
-                    case FINISHED:
-                    case CONTINUE_LATER:
-                        clearButton(doButton);
-                        clearButton(continueButton);
-                }
-            };
+            new TaskStorerToDatabase().store(task);
+            showCorrectButtons(task);
+            taskLabel.setText(task.toString());
+
+        };
+    }
+
+    private void showCorrectButtons(Task task) {
+        TaskStatus status = task.statusObjectProperty().get();
+        switch (status) {
+            case STARTED:
+                continueButton.setVisible(true);
+                doButton.setText("Done!");
+                break;
+            case FINISHED:
+            case CONTINUE_LATER:
+                clearButton(doButton);
+                clearButton(continueButton);
+        }
     }
 
     private void clearButton(Button button) {

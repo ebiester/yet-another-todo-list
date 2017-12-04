@@ -1,12 +1,23 @@
 apply plugin: 'idea'
 apply plugin: 'java'
 
+sourceCompatibility = 1.8
+version = '0.1'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                'Implementation-Version': version,
+                'Main-Class': 'com.ebiester.organizeme.Main'
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
-//todo: get this working instead of depending on local copies
 dependencies {
     compile 'org.jetbrains.xodus:xodus-openAPI:1.1.0'
     compile 'org.jetbrains.xodus:xodus-entity-store:1.1.0'
 }
+

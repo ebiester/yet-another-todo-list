@@ -18,12 +18,30 @@ public class TaskList {
         currentPageNumber = -1;
     }
 
+    public TaskList(List<Task> tasksFromDatabase) {
+        tasks = new ArrayList<>();
+        visibleTasks = FXCollections.observableArrayList(new ArrayList<>());
+        currentPageNumber = -1;
+
+        tasksFromDatabase.forEach(task -> {
+            task.setParentList(this);
+            this.add(task);
+            System.out.println("added task to tasklist: " + task.getTaskName());
+        });
+
+        System.out.println("total tasks visible: " + visibleTasks.size());
+    }
+
     public void add(String task) {
-        Task item = new Task(task, this);
-        tasks.add(item);
+        add(new Task(task, this));
+
+    }
+
+    private void add(Task task) {
+        tasks.add(task);
 
         if (visibleTasks.size() < 25) {
-            visibleTasks.add(new TaskCell(item));
+            visibleTasks.add(new TaskCell(task));
         }
     }
 

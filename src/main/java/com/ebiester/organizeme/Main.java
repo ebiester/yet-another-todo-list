@@ -1,5 +1,8 @@
 package com.ebiester.organizeme;
 
+//import com.ebiester.organizeme.db.DBConfigurationHolder;
+import com.ebiester.organizeme.db.DBConfigurationHolder;
+import com.ebiester.organizeme.db.TaskStorerToDatabase;
 import javafx.application.Application;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -11,6 +14,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jetbrains.exodus.entitystore.PersistentEntityStore;
+
+import java.io.File;
+import java.util.List;
 
 /*
 Note: a giant Application/controller mashup is not good architecture, but I'm still trying to understand the
@@ -21,10 +28,18 @@ I've also played with a few basic ideas but haven't committed to one yet.
 */
 
 public class Main extends Application {
+//    DBConfigurationHolder dbConfigurationHolder;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        TaskList taskList = new TaskList();
+
+        // TODO: Make this user configurable
+        String currentUserHomeDir = System.getProperty("user.home");
+        String storageDir = currentUserHomeDir + File.separator + ".organizeme";
+        DBConfigurationHolder.setStorageDir(storageDir);
+        List<Task> tasksFromDatabase = new TaskStorerToDatabase().getTasksFromDatabase();
+
+        TaskList taskList = new TaskList(tasksFromDatabase);
 
         ListView<TaskList> taskView = setupTaskListListView(taskList);
 
