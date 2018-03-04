@@ -32,8 +32,8 @@ public class TaskList {
         System.out.println("total tasks visible: " + visibleTasks.size());
     }
 
-    public void add(String task) {
-        add(new Task(task, this));
+    public void add(String taskName) {
+        add(new Task(taskName, this));
 
     }
 

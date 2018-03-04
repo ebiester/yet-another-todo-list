@@ -28,7 +28,6 @@ I've also played with a few basic ideas but haven't committed to one yet.
 */
 
 public class Main extends Application {
-//    DBConfigurationHolder dbConfigurationHolder;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -44,7 +43,7 @@ public class Main extends Application {
         ListView<TaskList> taskView = setupTaskListListView(taskList);
 
         VBox tilePane = new VBox();
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Todo List");
         primaryStage.setScene(new Scene(tilePane, 300, 275));
         ObservableList<Node> children = tilePane.getChildren();
         children.add(setupNewTaskBox(taskList));

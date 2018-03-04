@@ -36,8 +36,6 @@ class TaskCell extends HBox {
         HBox.setHgrow(taskLabel, Priority.ALWAYS);
         task.statusObjectProperty().addListener(getStatusInvalidationListener(task));
 
-        //doButton.setPrefWidth(continueButton.getWidth());
-
         continueButton.setVisible(false);
 
         this.getChildren().addAll(taskLabel, continueButton, doButton);

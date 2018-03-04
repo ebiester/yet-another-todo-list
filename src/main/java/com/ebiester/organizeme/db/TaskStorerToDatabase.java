@@ -13,7 +13,7 @@ import java.util.Optional;
 public class TaskStorerToDatabase {
     private static final String taskEntityType = "Task";
 
-    public void store(Task task) {
+    public void store(Task task) {System.out.println("Working with task: " + task.getTaskName() + " - " + task.getStatus().toString());
         PersistentEntityStore entityStore = DBConfigurationHolder.getPersistentEntityStore();
         StoreTransaction txn = entityStore.beginTransaction();
         try {
@@ -27,25 +27,27 @@ public class TaskStorerToDatabase {
                     taskEntity = txn.newEntity(taskEntityType);
                     taskEntity.setProperty("taskName", task.getTaskName());
                     taskEntity.setProperty("createdTime",
-                            getDatabaseReprestationOfLocalTime(task.getCreatedTime()));
+                            getDatabaseRepresentationOfLocalTime(task.getCreatedTime()));
                 }
 
                 taskEntity.setProperty("status", task.getStatus().name());
 
                 if (task.getStartedTime() != null) {
                     taskEntity.setProperty("startedTime",
-                            getDatabaseReprestationOfLocalTime(task.getStartedTime()));
+                            getDatabaseRepresentationOfLocalTime(task.getStartedTime()));
                 }
                 if (task.getEndedTime() != null) {
                     taskEntity.setProperty("endedTime",
-                            getDatabaseReprestationOfLocalTime(task.getEndedTime()));
+                            getDatabaseRepresentationOfLocalTime(task.getEndedTime()));
                 }
 
-                //TODO revisit when I understand better
+                //the current transaction will abort if someone changes underneath you.
                 if (txn != entityStore.getCurrentTransaction()) {
                     txn = null;
                     break;
                 }
+
+                task.setEntityId(taskEntity.getId());
             } while (!txn.flush());
         } finally {
             // if txn has not already been aborted in execute()
@@ -58,7 +60,7 @@ public class TaskStorerToDatabase {
     }
 
     //this shouldn't be necessary.
-    private String getDatabaseReprestationOfLocalTime(LocalDateTime time) {
+    private String getDatabaseRepresentationOfLocalTime(LocalDateTime time) {
         return time.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
@@ -70,7 +72,6 @@ public class TaskStorerToDatabase {
             final EntityIterable allTasks = txn.getAll(taskEntityType);
             for (Entity task : allTasks) {
                 String taskname = task.getProperty("taskName").toString();
-                System.out.println("adding " + taskname);
                 TaskStatus status = TaskStatus.valueOf(task.getProperty("status").toString());
                 LocalDateTime createdTime =
                         getLocalTimeFromDatabaseRepresentation(task.getProperty("createdTime")).get();
@@ -98,6 +99,12 @@ public class TaskStorerToDatabase {
     }
 
     private Optional<LocalDateTime> getLocalTimeFromDatabaseRepresentation(Comparable databaseRepresentation) {
-        return Optional.ofNullable(LocalDateTime.now());
+
+        LocalDateTime time = null;
+        if (databaseRepresentation != null) {
+            time = LocalDateTime.parse(databaseRepresentation.toString());
+        }
+
+        return Optional.ofNullable(time);
     }
 }
