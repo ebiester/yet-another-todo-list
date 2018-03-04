@@ -16,6 +16,7 @@ class TaskCell extends HBox {
     private Label taskLabel = new Label();
     private Button doButton;
     private Button continueButton;
+    private Button dontDoButton;
     private Task task;
     private Insets buttonPadding = new Insets(2, 4, 2, 4);
 
@@ -30,6 +31,10 @@ class TaskCell extends HBox {
         EventHandler<ActionEvent> continueEventHandler = event -> task.continueLater();
         continueButton = createButton("Continue", continueEventHandler);
 
+        EventHandler<ActionEvent> dontDoEventHandler = event -> task.notDone();
+        dontDoButton = createButton("Don't Do", dontDoEventHandler);
+
+
         this.task = task;
         taskLabel.setText(task.toString());
         taskLabel.setMaxWidth(Double.MAX_VALUE);
@@ -38,7 +43,7 @@ class TaskCell extends HBox {
 
         continueButton.setVisible(false);
 
-        this.getChildren().addAll(taskLabel, continueButton, doButton);
+        this.getChildren().addAll(taskLabel, continueButton, dontDoButton, doButton);
         showCorrectButtons(task);
     }
 
@@ -55,13 +60,16 @@ class TaskCell extends HBox {
         TaskStatus status = task.statusObjectProperty().get();
         switch (status) {
             case STARTED:
+                clearButton(dontDoButton);
                 continueButton.setVisible(true);
                 doButton.setText("Done!");
                 break;
+            case NOT_DONE:
             case FINISHED:
             case CONTINUE_LATER:
                 clearButton(doButton);
                 clearButton(continueButton);
+                clearButton(dontDoButton);
         }
     }
 

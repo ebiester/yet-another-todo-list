@@ -13,7 +13,7 @@ import java.util.Optional;
 public class TaskStorerToDatabase {
     private static final String taskEntityType = "Task";
 
-    public void store(Task task) {System.out.println("Working with task: " + task.getTaskName() + " - " + task.getStatus().toString());
+    public void store(Task task) {
         PersistentEntityStore entityStore = DBConfigurationHolder.getPersistentEntityStore();
         StoreTransaction txn = entityStore.beginTransaction();
         try {

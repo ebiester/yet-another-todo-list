@@ -34,7 +34,7 @@ public class Main extends Application {
 
         // TODO: Make this user configurable
         String currentUserHomeDir = System.getProperty("user.home");
-        String storageDir = currentUserHomeDir + File.separator + ".organizeme";
+        String storageDir = currentUserHomeDir + File.separator + ".organizemedev";
         DBConfigurationHolder.setStorageDir(storageDir);
         List<Task> tasksFromDatabase = new TaskStorerToDatabase().getTasksFromDatabase();
 
@@ -43,7 +43,7 @@ public class Main extends Application {
         ListView<TaskList> taskView = setupTaskListListView(taskList);
 
         VBox tilePane = new VBox();
-        primaryStage.setTitle("Todo List");
+        primaryStage.setTitle("Yet Another Todo List");
         primaryStage.setScene(new Scene(tilePane, 300, 275));
         ObservableList<Node> children = tilePane.getChildren();
         children.add(setupNewTaskBox(taskList));

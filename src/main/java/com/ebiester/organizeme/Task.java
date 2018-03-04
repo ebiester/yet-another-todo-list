@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-import static com.ebiester.organizeme.TaskStatus.READY;
+import static com.ebiester.organizeme.TaskStatus.*;
 
 public class Task {
     private String taskName;
@@ -51,38 +51,46 @@ public class Task {
     public void progress() {
         if (status.get() == READY) {
             startedTime = LocalDateTime.now();
-            status.setValue(TaskStatus.STARTED);
+            status.setValue(STARTED);
         } else {
             endedTime = LocalDateTime.now();
-            status.setValue(TaskStatus.FINISHED);
+            status.setValue(FINISHED);
         }
     }
 
     public void continueLater() {
         endedTime = LocalDateTime.now();
-        status.setValue(TaskStatus.CONTINUE_LATER);
+        status.setValue(CONTINUE_LATER);
         parentList.add(this.taskName);
+    }
+
+    public void notDone() {
+        endedTime = LocalDateTime.now();
+        status.setValue(NOT_DONE);
     }
 
     // Not sure I like toString controlling this behavior - will likely move this to a decorator later.
     public String toString() {
-        String append = null;
+        String formattedStatus = "";
+        String formattedEndTime = endedTime != null ? endedTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : "";
         switch (status.get()) {
             case READY:
-                append = "";
                 break;
             case STARTED:
-                append = " - started at " + startedTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                formattedStatus = " - started at " + startedTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 break;
             case FINISHED:
-                append = " - finished at " + endedTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                formattedStatus = " - finished at " + formattedEndTime;
                 break;
             case CONTINUE_LATER:
-                append = " - worked on until " + endedTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                formattedStatus = " - worked on until " + formattedEndTime;
+                break;
+            case NOT_DONE:
+                formattedStatus = " - not done on " + formattedEndTime;
                 break;
         }
 
-        return taskName + append;
+        return taskName + formattedStatus;
     }
 
     public String getTaskName() {
