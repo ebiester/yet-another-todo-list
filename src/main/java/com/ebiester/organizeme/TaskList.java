@@ -26,10 +26,7 @@ public class TaskList {
         tasksFromDatabase.forEach(task -> {
             task.setParentList(this);
             this.add(task);
-            System.out.println("added task to tasklist: " + task.getTaskName());
         });
-
-        System.out.println("total tasks visible: " + visibleTasks.size());
     }
 
     public void add(String taskName) {
