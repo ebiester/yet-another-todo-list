@@ -15,15 +15,17 @@ public class Task {
     private String taskName;
     private TaskList parentList;
     private ObjectProperty<TaskStatus> status;
+    private String notes;
     private LocalDateTime createdTime;
     private LocalDateTime startedTime;
     private LocalDateTime endedTime;
     //Does this belong here? Get this out or move storage in? Think about proper factoring.
     private EntityId entityId;
 
-    public Task(String taskName, TaskList taskList) {
+    public Task(String taskName, String notes, TaskList taskList) {
         this.taskName = taskName;
         this.parentList = taskList;
+        this.notes = notes;
         status = new SimpleObjectProperty<>(READY);
         this.createdTime = LocalDateTime.now();
         new TaskStorerToDatabase().store(this);
@@ -32,6 +34,7 @@ public class Task {
     public Task(EntityId entityId,
                 String taskName,
                 TaskStatus taskStatus,
+                String notes,
                 LocalDateTime createdTime,
                 Optional<LocalDateTime> startedTime,
                 Optional<LocalDateTime> endedTime) {
@@ -39,6 +42,12 @@ public class Task {
         this.taskName = taskName;
         this.status = new SimpleObjectProperty<>(taskStatus);
         this.createdTime = createdTime;
+        if (notes != null) {
+            this.notes = notes;
+        } else {
+            this.notes = "";
+        }
+
         startedTime.ifPresent(localDateTime -> this.startedTime = localDateTime);
         endedTime.ifPresent(localDateTime -> this.endedTime = localDateTime);
 
@@ -61,7 +70,7 @@ public class Task {
     public void continueLater() {
         endedTime = LocalDateTime.now();
         status.setValue(CONTINUE_LATER);
-        parentList.add(this.taskName);
+        parentList.add(this.taskName, this.getNotes());
     }
 
     public void notDone() {
@@ -124,5 +133,14 @@ public class Task {
     public void setParentList(TaskList parentList) {
         this.parentList = parentList;
     }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
 
 }

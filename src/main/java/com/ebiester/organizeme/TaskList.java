@@ -29,9 +29,8 @@ public class TaskList {
         });
     }
 
-    public void add(String taskName) {
-        add(new Task(taskName, this));
-
+    public void add(String taskName, String notes) {
+        add(new Task(taskName, notes,  this));
     }
 
     private void add(Task task) {

@@ -3,7 +3,7 @@ package com.ebiester.organizeme;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
-public class TaskListView extends ListView {
+public class TaskListView<T> extends ListView {
 
     public TaskListView(TaskList taskList) {
         super(taskList.getNextPage());

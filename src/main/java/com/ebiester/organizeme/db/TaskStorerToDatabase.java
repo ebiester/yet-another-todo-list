@@ -17,6 +17,7 @@ public class TaskStorerToDatabase {
         PersistentEntityStore entityStore = DBConfigurationHolder.getPersistentEntityStore();
         StoreTransaction txn = entityStore.beginTransaction();
         try {
+            System.out.println("Updating store");
             do {
                 Entity taskEntity;
                 EntityId taskEntityId = task.getEntityId();
@@ -31,6 +32,7 @@ public class TaskStorerToDatabase {
                 }
 
                 taskEntity.setProperty("status", task.getStatus().name());
+                taskEntity.setProperty("notes", task.getNotes());
 
                 if (task.getStartedTime() != null) {
                     taskEntity.setProperty("startedTime",
@@ -73,6 +75,11 @@ public class TaskStorerToDatabase {
             for (Entity task : allTasks) {
                 String taskname = task.getProperty("taskName").toString();
                 TaskStatus status = TaskStatus.valueOf(task.getProperty("status").toString());
+                String notes = "";
+                if (task.getProperty("notes") != null) {
+                    notes = task.getProperty("notes").toString();
+                }
+
                 LocalDateTime createdTime =
                         getLocalTimeFromDatabaseRepresentation(task.getProperty("createdTime")).get();
                   Optional<LocalDateTime> startedTime =
@@ -84,6 +91,7 @@ public class TaskStorerToDatabase {
                 tasks.add(new Task(task.getId(),
                         taskname,
                         status,
+                        notes,
                         createdTime,
                         startedTime,
                         endedTime));

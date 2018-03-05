@@ -29,7 +29,7 @@ class TaskCell extends HBox {
         doButton = createButton("Do", progressEventHandler);
 
         EventHandler<ActionEvent> continueEventHandler = event -> task.continueLater();
-        continueButton = createButton("Continue", continueEventHandler);
+        continueButton = createButton("Continue Later", continueEventHandler);
 
         EventHandler<ActionEvent> dontDoEventHandler = event -> task.notDone();
         dontDoButton = createButton("Don't Do", dontDoEventHandler);
@@ -85,6 +85,15 @@ class TaskCell extends HBox {
         button.setOnAction(eventHandler);
 
         return button;
+    }
+
+    public String getNotes() {
+        return task.getNotes();
+    }
+
+    public void setNotes(String notes) {
+        task.setNotes(notes);
+        new TaskStorerToDatabase().store(task);
     }
 
 }

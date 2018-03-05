@@ -18,7 +18,7 @@ public class NewTaskBox extends HBox {
         EventHandler<ActionEvent> actionEvent = (event) -> {
             StringProperty todoText = addTodoTextField.textProperty();
             if (todoText.isNotEmpty().get()) {
-                taskList.add(todoText.get());
+                taskList.add(todoText.get(), "");
                 todoText.setValue("");
             }
         };
