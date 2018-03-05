@@ -2,14 +2,20 @@ apply plugin: 'idea'
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
-version = '0.1'
+targetCompatibility = 1.8
+version = '0.2'
 
-jar {
+// Stolen from https://www.mkyong.com/gradle/gradle-create-a-jar-file-with-dependencies/
+task fatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'Gradle Quickstart',
+        attributes 'Implementation-Title': 'Yet Another Todo List',
                 'Implementation-Version': version,
                 'Main-Class': 'com.ebiester.organizeme.Main'
     }
+
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
 repositories {
@@ -19,5 +25,7 @@ repositories {
 dependencies {
     compile 'org.jetbrains.xodus:xodus-openAPI:1.1.0'
     compile 'org.jetbrains.xodus:xodus-entity-store:1.1.0'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+
 }
 

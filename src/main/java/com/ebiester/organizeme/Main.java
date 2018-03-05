@@ -1,20 +1,10 @@
 package com.ebiester.organizeme;
 
-//import com.ebiester.organizeme.db.DBConfigurationHolder;
 import com.ebiester.organizeme.db.DBConfigurationHolder;
 import com.ebiester.organizeme.db.TaskStorerToDatabase;
 import javafx.application.Application;
-import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import jetbrains.exodus.entitystore.PersistentEntityStore;
 
 import java.io.File;
 import java.util.List;
@@ -34,13 +24,12 @@ public class Main extends Application {
 
         // TODO: Make this user configurable
         String currentUserHomeDir = System.getProperty("user.home");
-        String storageDir = currentUserHomeDir + File.separator + ".organizemedev";
+        String storageDir = currentUserHomeDir + File.separator + ".organizeme";
         DBConfigurationHolder.setStorageDir(storageDir);
         List<Task> tasksFromDatabase = new TaskStorerToDatabase().getTasksFromDatabase();
 
         TaskList taskList = new TaskList(tasksFromDatabase);
 
-        VBox tilePane = new VBox();
         primaryStage.setTitle("Yet Another Todo List");
         primaryStage.setScene(new Scene(new AppLayoutVBox(taskList)));
 
