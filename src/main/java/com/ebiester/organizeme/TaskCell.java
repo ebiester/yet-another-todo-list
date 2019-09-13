@@ -73,6 +73,10 @@ class TaskCell extends HBox {
         }
     }
 
+    public void archiveTask() {
+        task.archive();
+    }
+
     private void clearButton(Button button) {
         button.setVisible(false);
         button.setManaged(false);

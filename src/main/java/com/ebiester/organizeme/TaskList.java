@@ -9,6 +9,7 @@ public class TaskList {
     private ArrayList<Task> tasks;
     private ObservableList<TaskCell> visibleTasks;
     private int currentPageNumber;
+    private boolean isShowingArchivedItems = false;
 
     private static final Integer NUMBER_OF_TASKS_ON_PAGE = 25;
 
@@ -24,8 +25,10 @@ public class TaskList {
         currentPageNumber = -1;
 
         tasksFromDatabase.forEach(task -> {
-            task.setParentList(this);
-            this.add(task);
+            if (isShowingArchivedItems || !task.isArchived()) {
+                task.setParentList(this);
+                this.add(task);
+            }
         });
     }
 
@@ -70,8 +73,10 @@ public class TaskList {
     }
 
     public void archivePage() {
+        visibleTasks.forEach(taskCell -> taskCell.archiveTask());
     }
 
     public void showArchivedPages(boolean show) {
+        isShowingArchivedItems = show;
     }
 }
