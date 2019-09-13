@@ -69,5 +69,9 @@ public class TaskList {
         return tasks.subList(from, to);
     }
 
+    public void archivePage() {
+    }
 
+    public void showArchivedPages(boolean show) {
+    }
 }

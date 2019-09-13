@@ -21,6 +21,7 @@ public class Task {
     private LocalDateTime endedTime;
     //Does this belong here? Get this out or move storage in? Think about proper factoring.
     private EntityId entityId;
+    private boolean isArchived;
 
     public Task(String taskName, String notes, TaskList taskList) {
         this.taskName = taskName;
@@ -28,6 +29,7 @@ public class Task {
         this.notes = notes;
         status = new SimpleObjectProperty<>(READY);
         this.createdTime = LocalDateTime.now();
+        this.isArchived = false;
         new TaskStorerToDatabase().store(this);
     }
 
@@ -35,6 +37,7 @@ public class Task {
                 String taskName,
                 TaskStatus taskStatus,
                 String notes,
+                boolean isArchived,
                 LocalDateTime createdTime,
                 Optional<LocalDateTime> startedTime,
                 Optional<LocalDateTime> endedTime) {
@@ -42,6 +45,7 @@ public class Task {
         this.taskName = taskName;
         this.status = new SimpleObjectProperty<>(taskStatus);
         this.createdTime = createdTime;
+        this.isArchived = isArchived;
         if (notes != null) {
             this.notes = notes;
         } else {
@@ -76,6 +80,17 @@ public class Task {
     public void notDone() {
         endedTime = LocalDateTime.now();
         status.setValue(NOT_DONE);
+    }
+
+    public void archive() {
+        isArchived = true;
+        if (endedTime != null) {
+            endedTime = LocalDateTime.now();
+        }
+
+        if (status.getValue() != FINISHED) {
+            status.setValue(NOT_DONE);
+        }
     }
 
     // Not sure I like toString controlling this behavior - will likely move this to a decorator later.
@@ -142,5 +157,7 @@ public class Task {
         this.notes = notes;
     }
 
-
+    public boolean isArchived() {
+        return this.isArchived;
+    }
 }

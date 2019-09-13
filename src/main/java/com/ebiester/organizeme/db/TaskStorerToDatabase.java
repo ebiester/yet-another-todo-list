@@ -33,6 +33,7 @@ public class TaskStorerToDatabase {
 
                 taskEntity.setProperty("status", task.getStatus().name());
                 taskEntity.setProperty("notes", task.getNotes());
+                taskEntity.setProperty("isArchived", task.isArchived() ? "true" : "false");
 
                 if (task.getStartedTime() != null) {
                     taskEntity.setProperty("startedTime",
@@ -80,6 +81,11 @@ public class TaskStorerToDatabase {
                     notes = task.getProperty("notes").toString();
                 }
 
+                boolean isArchived = false;
+                if (task.getProperty("isArchived") != null) {
+                    isArchived = task.getProperty("isArchived") == "true";
+                }
+
                 LocalDateTime createdTime =
                         getLocalTimeFromDatabaseRepresentation(task.getProperty("createdTime")).get();
                   Optional<LocalDateTime> startedTime =
@@ -92,6 +98,7 @@ public class TaskStorerToDatabase {
                         taskname,
                         status,
                         notes,
+                        isArchived,
                         createdTime,
                         startedTime,
                         endedTime));

@@ -2,7 +2,10 @@ package com.ebiester.organizeme;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.Menu;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.MenuBar;
+
 
 public class AppLayoutVBox extends VBox{
     public AppLayoutVBox(TaskList taskList) {
@@ -20,9 +23,11 @@ public class AppLayoutVBox extends VBox{
             notesBox.update();
         });
 
-        children.add(new NewTaskBox(taskList));
-        children.add(taskListView);
-        children.add(new PageManipulationBox(taskList));
-        children.add(notesBox);
+        children.addAll(new MenuBuilder().getMenu(),
+                new NewTaskBox(taskList),
+                taskListView,
+                new PageManipulationBox(taskList),
+                notesBox);
     }
+
 }

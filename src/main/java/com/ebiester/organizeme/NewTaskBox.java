@@ -11,9 +11,11 @@ public class NewTaskBox extends HBox {
     public NewTaskBox(TaskList taskList) {
         TextField addTodoTextField = new TextField();
         addTodoTextField.setMaxWidth(Double.MAX_VALUE);
+        addTodoTextField.setPrefWidth(600.0);
 
         Button addButton = new Button();
         addButton.setText("Add");
+        addButton.setPrefWidth(50);
 
         EventHandler<ActionEvent> actionEvent = (event) -> {
             StringProperty todoText = addTodoTextField.textProperty();

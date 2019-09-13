@@ -9,3 +9,16 @@ Why JavaFX? Why Java? I've been asking myself that question, and I might choose 
 A todo list is a weird itch to scratch... 
 
 Quick notes: It uses Xodus from JetBrains and by default puts the database in ~/.organizeme . To build, use `gradle fatJar`. Since I'm running this on i3, I'm sure the proportions are wildly weird. 
+
+0.3.1 notes:
+
+Upgrading to newer java that don't use JavaFX has been mildly challenging. As a current workaround, I am downloading javaFX separately and running this script:
+
+```$xslt
+#/bin/bash
+PATH_TO_FX=$HOME/work/sandbox/javafx-sdk-13/lib
+JAVA_HOME=$HOME/.sdkman/candidates/java/12.0.1.hs-adpt
+JAR_LOCATION=$HOME/bin/autofocus-javafx-all-0.3.1.jar
+DB_PATH=$HOME/.organizeme
+$JAVA_HOME/bin/java --module-path $PATH_TO_FX --add-modules javafx.controls -jar $JAR_LOCATION -Xms64m -Xmx256m  --dbpath=$DB_PATH
+```

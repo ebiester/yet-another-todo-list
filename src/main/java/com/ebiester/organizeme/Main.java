@@ -5,9 +5,12 @@ import com.ebiester.organizeme.db.TaskStorerToDatabase;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 /*
 Note: a giant Application/controller mashup is not good architecture, but I'm still trying to understand the
@@ -19,12 +22,18 @@ I've also played with a few basic ideas but haven't committed to one yet.
 
 public class Main extends Application {
 
+    private static Logger log = LoggerFactory.getLogger(Main.class);
+
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        // TODO: Make this user configurable
+        Map<String, String> params = getParameters().getNamed();
         String currentUserHomeDir = System.getProperty("user.home");
-        String storageDir = currentUserHomeDir + File.separator + ".organizeme";
+        String defaultStorageDir = currentUserHomeDir + File.separator + ".organizeme";
+        String storageDir = params.getOrDefault("dbpath", defaultStorageDir);
+
+        log.info("Starting in " + storageDir);
+
         DBConfigurationHolder.setStorageDir(storageDir);
         List<Task> tasksFromDatabase = new TaskStorerToDatabase().getTasksFromDatabase();
 
