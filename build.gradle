@@ -1,9 +1,31 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
 apply plugin: 'idea'
 apply plugin: 'java'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-version = '0.2'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+version = '0.3.1'
+mainClassName = 'com.ebiester.organizeme.Main'
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "13"
+    modules = [ 'javafx.controls' ]
+}
+
+dependencies {
+    compile 'org.jetbrains.xodus:xodus-openAPI:1.1.0'
+    compile 'org.jetbrains.xodus:xodus-entity-store:1.1.0'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+
+}
 
 // Stolen from https://www.mkyong.com/gradle/gradle-create-a-jar-file-with-dependencies/
 task fatJar(type: Jar) {
@@ -17,15 +39,3 @@ task fatJar(type: Jar) {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile 'org.jetbrains.xodus:xodus-openAPI:1.1.0'
-    compile 'org.jetbrains.xodus:xodus-entity-store:1.1.0'
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
-
-}
-
